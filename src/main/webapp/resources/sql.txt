@@ -1,0 +1,32 @@
+-- 2026-06-17
+-- DB 생성
+
+--root 계정으로 생성
+-- jspdb / jspUser / mysql
+
+create database jspdb;
+
+use mysql;
+create user 'jspUser'@'localhost' identified by 'mysql';
+grant all privileges on jspdb.* to 'jspUser'@'localhost';
+flush privileges;
+
+-- jspUser로 접속
+-- board table 생성
+use jspdb;
+
+create table board(
+bno int not null auto_increment,
+title varchar(100) not null,
+writer varchar(100) not null,
+contents text,
+regdate datetime default now(),
+moddate datetime default now(),
+primary key(bno));
+
+ -- alter table board change content contents text;
+ 
+ 
+ 
+ 
+ 
