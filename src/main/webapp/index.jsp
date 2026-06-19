@@ -11,5 +11,7 @@
 	
 	<a href="/brd/register">글쓰기</a>
 	<a href="/brd/list">리스트보기</a>
+	<a href="/user/register">회원가입</a>
+	<a href="/user/login">로그인</a>
 </body>
 </html>

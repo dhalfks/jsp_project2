@@ -40,7 +40,8 @@
 	<!-- modify.jsp에 화면을 수정할 수 있게 준비 -->
 	
 	<a href="/brd/modify?bno=${board.bno }"><button>수정</button></a>
-	<button>삭제</button>
+	<a href="/brd/delete?bno=${board.bno }"><button>삭제</button></a> 
+	<a href="/brd/list"><button>리스트</button></a>
 	
 </body>
 </html>

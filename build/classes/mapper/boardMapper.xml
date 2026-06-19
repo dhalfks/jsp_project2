@@ -28,6 +28,9 @@
 			where bno = #{bno}
 	</update>
 	
+	<delete id="del">
+		delete from board where bno = #{bno}
+	</delete>
 	
 	
 	

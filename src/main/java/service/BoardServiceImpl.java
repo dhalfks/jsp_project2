@@ -44,4 +44,10 @@ public class BoardServiceImpl implements BoardService {
 		return bdao.update(board);
 	}
 
+	@Override
+	public void delete(int bno) {
+		// TODO Auto-generated method stub
+		bdao.delete(bno);		
+	}
+
 }

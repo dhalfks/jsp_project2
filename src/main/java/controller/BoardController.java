@@ -147,6 +147,22 @@ public class BoardController extends HttpServlet {
 			}
 			break;
 			
+		case "delete":
+			try {
+				int bno = Integer.parseInt(request.getParameter("bno"));
+				
+				// db 에 삭제 요청
+				bsv.delete(bno);
+				
+				destPage = "list"; // 내부 케이스를 돌아야 함.
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+			
 	
 			
 			

@@ -26,7 +26,21 @@ primary key(bno));
 
  -- alter table board change content contents text;
  
- 
+-- 2026-06-19
+-- User 테이블 생성
+-- id, pw, email, phone, regdate, moddate, lastlogin
+create table user(
+id varchar(100) not null,
+pw varchar(100) not null,
+email varchar(100) not null, 
+phone varchar(100),
+regdate datetime default now(),
+moddate datetime default now(),
+lastlogin datetime default now(),
+primary key(id)
+);
+
+
  
  
  
