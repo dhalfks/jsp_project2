@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +104,46 @@ public class UserController extends HttpServlet {
 				User loginUser = usv.getUser(new User(id,pw));
 				
 				log.info(">> loginUser >> {}", loginUser);
+				
+				if(loginUser != null) {
+					// 로그인 처리
+					// session 객체에 저장
+					HttpSession ses = request.getSession();
+					ses.setAttribute("ses", loginUser); // ses 객체에 로그인유저 정보 저장
+					// 로그인 유지 시간
+					ses.setMaxInactiveInterval(60*10); // 10분 로그인 유지시간 초단위
+					log.info(">> ses >> {}", ses);
+					destPage = "/";  // index.jsp
+					
+				}else {
+					// 로그인 객체가 없다면...
+					// index.jsp 페이지로 메시지를 전송
+					
+					//request.setAttribute("login_msg", "notUser");
+					destPage = "/?login_msg=notUser";
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+		case "logout":
+			try {
+				HttpSession ses = request.getSession();
+				// lastlogin 기록 => 로그인 날짜 기록
+				// id가 필요 => ses에 담아놓은 loginUser 객체에서 추출
+				User loginUser = (User)ses.getAttribute("ses");
+				int isOk = usv.lastLoginUpdate(loginUser.getId());
+				// update user set lastlogin = now() where id = #{id}
+				
+				// ses 객체 삭제
+				ses.removeAttribute("ses");
+				
+				// 세션 무효화 (끊기)
+				ses.invalidate();
+				
+				destPage = "/";
 				
 			} catch (Exception e) {
 				// TODO: handle exception

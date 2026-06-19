@@ -13,5 +13,9 @@
   	<select id="login" resultType="domain.User">
   		select * from user where id = #{id} and pw = #{pw}
   	</select>
+  	
+  	<update id="lastLogin">
+  		update user set lastlogin = now() where id = #{id}
+  	</update>
   
   </mapper>

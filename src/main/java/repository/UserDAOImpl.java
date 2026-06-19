@@ -32,6 +32,14 @@ public class UserDAOImpl implements UserDAO {
 		// TODO Auto-generated method stub
 		return sql.selectOne("userMapper.login", user);
 	}
+
+	@Override
+	public int lastLoginUpdate(String id) {
+		// TODO Auto-generated method stub
+		int isOk = sql.update("userMapper.lastLogin", id);
+		if(isOk > 0) sql.commit();
+		return isOk;
+	}
 	
 
 }

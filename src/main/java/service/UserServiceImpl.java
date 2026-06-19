@@ -30,4 +30,10 @@ public class UserServiceImpl implements UserService {
 		return udao.getUser(user);
 	}
 
+	@Override
+	public int lastLoginUpdate(String id) {
+		// TODO Auto-generated method stub
+		return udao.lastLoginUpdate(id);
+	}
+
 }

@@ -8,4 +8,6 @@ public interface UserDAO {
 
 	User getUser(User user);
 
+	int lastLoginUpdate(String id);
+
 }
