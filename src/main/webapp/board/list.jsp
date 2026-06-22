@@ -31,5 +31,37 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<!-- paging line -->
+	<div>
+		<!-- 이전 -->
+		<c:if test="true">
+			<a> < </a>
+		</c:if>
+		
+		<!-- 1~10 -->
+		<c:forEach begin="1" end="10" var="i">
+			<a>${i } </a>
+		</c:forEach>
+		
+		<!-- 다음 -->
+		<c:if test="true">
+			<a> > </a>
+		</c:if>
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </body>
 </html>

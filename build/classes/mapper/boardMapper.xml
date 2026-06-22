@@ -32,6 +32,9 @@
 		delete from board where bno = #{bno}
 	</delete>
 	
+	<select id="paging" resultType="domain.Board">
+		select * from board order by bno desc limit #{pageIndex}, #{qty}  
+	</select>
 	
 	
 	

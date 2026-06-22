@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import domain.Board;
+import domain.PagingVO;
 import orm.DatabaseBuilder;
 
 public class BoardDAOImpl implements BoardDAO {
@@ -60,6 +61,12 @@ public class BoardDAOImpl implements BoardDAO {
 		// TODO Auto-generated method stub
 		int isOk = sql.delete("boardMapper.del",bno);
 		if(isOk > 0) sql.commit();
+	}
+
+	@Override
+	public List<Board> getList(PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return sql.selectList("boardMapper.paging", pagingVO);
 	}
 
 }

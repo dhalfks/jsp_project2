@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import domain.Board;
+import domain.PagingVO;
 import repository.BoardDAO;
 import repository.BoardDAOImpl;
 
@@ -26,11 +27,11 @@ public class BoardServiceImpl implements BoardService {
 		return bdao.insert(board);
 	}
 
-	@Override
-	public List<Board> getList() {
-		// TODO Auto-generated method stub
-		return bdao.getList();
-	}
+//	@Override
+//	public List<Board> getList() {
+//		// TODO Auto-generated method stub
+//		return bdao.getList();
+//	}
 
 	@Override
 	public Board getDetail(int bno) {
@@ -48,6 +49,12 @@ public class BoardServiceImpl implements BoardService {
 	public void delete(int bno) {
 		// TODO Auto-generated method stub
 		bdao.delete(bno);		
+	}
+
+	@Override
+	public List<Board> getList(PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return bdao.getList(pagingVO);
 	}
 
 }

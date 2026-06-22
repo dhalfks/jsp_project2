@@ -3,6 +3,7 @@ package repository;
 import java.util.List;
 
 import domain.Board;
+import domain.PagingVO;
 
 public interface BoardDAO {
 
@@ -15,5 +16,7 @@ public interface BoardDAO {
 	int update(Board board);
 
 	void delete(int bno);
+
+	List<Board> getList(PagingVO pagingVO);
 
 }

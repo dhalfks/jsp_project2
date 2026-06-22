@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import domain.Board;
+import domain.PagingVO;
 import service.BoardService;
 import service.BoardServiceImpl;
 
@@ -95,9 +96,14 @@ public class BoardController extends HttpServlet {
 			
 		case "list" :
 			try {
-				// DB에서 전체 리스트를 요청
+				// DB에서 전체 리스트를 요청 (페이징 없이 처리)
 				// list.jsp 페이지로 전송 
-				List<Board> list = bsv.getList();
+				// List<Board> list = bsv.getList();
+				PagingVO pagingVO = new PagingVO(); // pageNo = 1 / qty = 10
+				
+				List<Board> list = bsv.getList(pagingVO);				
+				
+				// 페이징을 포함한 값으로 요청
 				request.setAttribute("list", list);
 				destPage="/board/list.jsp";
 				
