@@ -69,4 +69,10 @@ public class BoardDAOImpl implements BoardDAO {
 		return sql.selectList("boardMapper.paging", pagingVO);
 	}
 
+	@Override
+	public int getTotal() {
+		// select count(bno) from board;
+		return sql.selectOne("boardMapper.cnt");
+	}
+
 }

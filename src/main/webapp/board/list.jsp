@@ -32,6 +32,8 @@
 		</tbody>
 	</table>
 	
+	${ph }
+	
 	<!-- paging line -->
 	<div>
 		<!-- 이전 -->

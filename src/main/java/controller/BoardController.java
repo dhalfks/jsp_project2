@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import domain.Board;
 import domain.PagingVO;
+import handler.PagingHandler;
 import service.BoardService;
 import service.BoardServiceImpl;
 
@@ -101,10 +102,19 @@ public class BoardController extends HttpServlet {
 				// List<Board> list = bsv.getList();
 				PagingVO pagingVO = new PagingVO(); // pageNo = 1 / qty = 10
 				
-				List<Board> list = bsv.getList(pagingVO);				
+				List<Board> list = bsv.getList(pagingVO);	
+				
+				// totalCount => DB에서 계산해오기
+				// select count(bno) from board;
+				int totalCount = bsv.getTotal();
+				
+				
+				PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+				log.info(">>> ph >>{}", ph);
 				
 				// 페이징을 포함한 값으로 요청
 				request.setAttribute("list", list);
+				request.setAttribute("ph", ph);
 				destPage="/board/list.jsp";
 				
 			} catch (Exception e) {

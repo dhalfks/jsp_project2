@@ -36,6 +36,10 @@
 		select * from board order by bno desc limit #{pageIndex}, #{qty}  
 	</select>
 	
+	<select id="cnt" resultType="int">
+		select count(bno) from board;
+	</select>
+	
 	
 	
 <!--   

@@ -57,4 +57,10 @@ public class BoardServiceImpl implements BoardService {
 		return bdao.getList(pagingVO);
 	}
 
+	@Override
+	public int getTotal() {
+		// TODO Auto-generated method stub
+		return bdao.getTotal();
+	}
+
 }
