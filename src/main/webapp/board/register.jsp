@@ -11,7 +11,7 @@
 	
 	<form action="/brd/insert" method="post">
 		제목: <input type="text" name="title" placeholder="제목을 입력하세요."><br>
-		작성자 : <input type="text" name="writer" placeholder="작성자..."><br>
+		작성자 : <input type="text" name="writer" value="${ses.id }" readonly="readonly"><br>
 		내용:
 		<textarea rows="10" cols="30" name="contents" placeholder="내용을 입력하세요."></textarea><br>
 		<button type="submit">등록</button>
