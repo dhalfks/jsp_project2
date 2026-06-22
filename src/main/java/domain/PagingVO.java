@@ -17,15 +17,21 @@ public class PagingVO {
 	private int pageNo; // 화면에서 클릭하는 페이징 숫자
 	private int qty; // 한 화면에 출력할 게시글 수 (10개)
 	
+	// search 추가된 파라미터
+	private String type;
+	private String keyword;
+	
 	public PagingVO() {
 		// 파라미터 없이 첫 리스트를 호출
 		this.pageNo = 1;
 		this.qty = 10;
 	}
 	
-	public PagingVO(int pageNo, int qty) {
+	public PagingVO(int pageNo, int qty, String type, String keyword) {
 		this.pageNo = pageNo;
 		this.qty = qty;
+		this.type = type;
+		this.keyword = keyword;
 	}
 	
 	// getter => 번지를 계산하는 메서드
@@ -37,7 +43,9 @@ public class PagingVO {
 		
 	}
 	
-	
+	public String[] getTypeToArray() {
+		return this.type == null? new String[] {}: this.type.split("");
+	}
 	
 	
 	

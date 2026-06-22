@@ -9,6 +9,28 @@
 </head>
 <body>
 	<h1>게시글 리스트 보기</h1>
+	
+	<!-- search line -->
+	<div>
+		<form action="/brd/list" method="get">
+			<select name="type">
+				<option >Choose...</option>
+				<option value="t"> title </option>
+				<option value="w"> writer </option>
+				<option value="c"> contents </option>
+				<option value="twc"> all </option>
+			</select>	
+			
+			<input type="text" name="keyword" placeholder="keyword...">	
+			
+			<!-- /brd/list => parameter (pageNo, qty) -->
+			<input type="hidden" name="pageNo" value="1">
+			<input type="hidden" name="qty" value="10">
+			<button type="submit">검색</button>
+		</form>
+	</div>
+
+	
 	<table border="1">
 		<thead>
 			<tr>
@@ -31,24 +53,22 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	
 	${ph }
-	
 	<!-- paging line -->
 	<div>
-		<!-- 이전 -->
-		<c:if test="true">
-			<a> < </a>
+		<!-- 이전  11 ~ 20-->
+		<c:if test="${ph.prev }">
+			<a href="/brd/list?pageNo=${ph.startPage-1 }&qty=${10 }&type=${ph.pagingVO.type}&keyword=${ph.pagingVO.keyword}"> < </a>
 		</c:if>
 		
 		<!-- 1~10 -->
-		<c:forEach begin="1" end="10" var="i">
-			<a>${i } </a>
+		<c:forEach begin="${ph.startPage }" end="${ph.endPage }" var="i">
+			<a href="/brd/list?pageNo=${i }&qty=${10}&type=${ph.pagingVO.type}&keyword=${ph.pagingVO.keyword}">${i } </a>
 		</c:forEach>
 		
 		<!-- 다음 -->
-		<c:if test="true">
-			<a> > </a>
+		<c:if test="${ph.next }">
+			<a href="/brd/list?pageNo=${ph.endPage+1 }&qty=${10 }&type=${ph.pagingVO.type}&keyword=${ph.pagingVO.keyword}"> > </a>
 		</c:if>
 	
 	</div>

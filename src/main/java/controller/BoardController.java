@@ -100,13 +100,24 @@ public class BoardController extends HttpServlet {
 				// DB에서 전체 리스트를 요청 (페이징 없이 처리)
 				// list.jsp 페이지로 전송 
 				// List<Board> list = bsv.getList();
+				
 				PagingVO pagingVO = new PagingVO(); // pageNo = 1 / qty = 10
+				
+				if(request.getParameter("pageNo") != null) {
+					int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+					int qty = Integer.parseInt(request.getParameter("qty"));
+					String type = request.getParameter("type");
+					String keyword = request.getParameter("keyword");
+					
+					pagingVO = new PagingVO(pageNo, qty, type, keyword);
+				}
+				
 				
 				List<Board> list = bsv.getList(pagingVO);	
 				
 				// totalCount => DB에서 계산해오기
 				// select count(bno) from board;
-				int totalCount = bsv.getTotal();
+				int totalCount = bsv.getTotal(pagingVO);
 				
 				
 				PagingHandler ph = new PagingHandler(pagingVO, totalCount);

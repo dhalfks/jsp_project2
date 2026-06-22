@@ -19,6 +19,8 @@ public interface BoardService {
 
 	List<Board> getList(PagingVO pagingVO);
 
-	int getTotal();
+	//int getTotal();
+
+	int getTotal(PagingVO pagingVO);
 
 }
