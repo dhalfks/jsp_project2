@@ -26,7 +26,8 @@
 			<!-- /brd/list => parameter (pageNo, qty) -->
 			<input type="hidden" name="pageNo" value="1">
 			<input type="hidden" name="qty" value="10">
-			<button type="submit">검색</button>
+			<button type="submit">검색</button> 
+			<span>검색결과 : ${ph.totalCount }개</span>
 		</form>
 	</div>
 
