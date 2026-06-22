@@ -36,4 +36,16 @@ public class UserServiceImpl implements UserService {
 		return udao.lastLoginUpdate(id);
 	}
 
+	@Override
+	public int update(User user) {
+		// TODO Auto-generated method stub
+		return udao.update(user);
+	}
+
+	@Override
+	public int delete(String id) {
+		// TODO Auto-generated method stub
+		return udao.delete(id);
+	}
+
 }

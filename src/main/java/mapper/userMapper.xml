@@ -17,5 +17,14 @@
   	<update id="lastLogin">
   		update user set lastlogin = now() where id = #{id}
   	</update>
+  	
+  	<update id="up">
+  		update user set pw=#{pw}, email=#{email}, phone=#{phone}, moddate=now()
+  			where id=#{id}
+  	</update>
+  	
+  	<delete id="del">
+  		delete from user where id = #{id}  		
+  	</delete>
   
   </mapper>

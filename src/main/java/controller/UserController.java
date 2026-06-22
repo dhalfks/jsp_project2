@@ -150,6 +150,74 @@ public class UserController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "modify":
+			destPage = "/member/modify.jsp";
+			break;
+			
+		case "update":
+			try {
+				String id = request.getParameter("id");
+				String pw = request.getParameter("pw");
+				String email = request.getParameter("email");
+				String phone = request.getParameter("phone");
+				
+				HttpSession ses = request.getSession();
+				User loginUser = (User)ses.getAttribute("ses");
+				
+				if(pw.trim().length()==0 || pw == null) {
+					// pw가 비었다면 (pw를 바꾸지 않는다면 기존의 pw로 설정)
+					pw = loginUser.getPw();
+				}
+				
+				User user = new User();
+				user.setId(id);
+				user.setPw(pw);
+				user.setEmail(email);
+				user.setPhone(phone);
+				
+				int isOk = usv.update(user);
+				log.info(">>> update isOk >> {}", (isOk>0)?"성공":"실패");
+				
+				// 세션을 끊고 다시 로그인 할 수 있게 유도
+				if(isOk > 0) {
+					ses.removeAttribute("ses");
+					ses.invalidate();
+					// jsp에서 받을 때 param.변수명
+					destPage = "/?update_msg=OK";
+				}else {
+					request.setAttribute("update_msg", "Fail");
+					// jsp에서 받을 때 그냥 변수명으로 받기
+					destPage = "/member/modify.jsp";
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+			
+		case "remove":
+			try {
+				HttpSession ses = request.getSession();
+				String id = ((User)ses.getAttribute("ses")).getId();
+				
+				int isOk = usv.delete(id);
+				
+				if(isOk >0) {
+					ses.removeAttribute("ses");
+					ses.invalidate();
+					destPage= "/?delete_msg=OK";
+				}else {
+					request.setAttribute("delete_msg", "Fail");
+					destPage="/member/modify.jsp";
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+			
 		}
 		
 		rdp = request.getRequestDispatcher(destPage);

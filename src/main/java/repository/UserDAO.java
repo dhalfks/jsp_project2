@@ -10,4 +10,8 @@ public interface UserDAO {
 
 	int lastLoginUpdate(String id);
 
+	int update(User user);
+
+	int delete(String id);
+
 }

@@ -35,6 +35,16 @@
 			alert('로그인 정보가 일치하지 않습니다.');
 			location.href="/";
 		}
+		const update_msg = `<c:out value="${param.update_msg }"></c:out>`;
+		if(update_msg == 'OK'){
+			alert('회원정보 수정 완료! 다시 로그인해주세요.');
+			location.href="/";
+		}
+		const delete_msg = `<c:out value="${param.delete_msg }"></c:out>`;
+		if(delete_msg == 'OK'){
+			alert('회원삭제 완료!');
+			location.href="/";
+		}
 	
 	</script>
 </body>

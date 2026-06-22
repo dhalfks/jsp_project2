@@ -40,6 +40,22 @@ public class UserDAOImpl implements UserDAO {
 		if(isOk > 0) sql.commit();
 		return isOk;
 	}
+
+	@Override
+	public int update(User user) {
+		// TODO Auto-generated method stub
+		int isOk = sql.update("userMapper.up", user);
+		if(isOk > 0) sql.commit();
+		return isOk;
+	}
+
+	@Override
+	public int delete(String id) {
+		// TODO Auto-generated method stub
+		int isOk = sql.delete("userMapper.del", id);
+		if(isOk > 0) sql.commit();
+		return isOk;
+	}
 	
 
 }
