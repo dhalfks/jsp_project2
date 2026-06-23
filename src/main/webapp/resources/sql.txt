@@ -40,6 +40,16 @@ lastlogin datetime default now(),
 primary key(id)
 );
 
+-- 2026-06-23
+-- comment 테이블 생성
+create table comment(
+cno int not null auto_increment,
+bno int not null,
+writer varchar(100) not null,
+contents varchar(1000) not null,
+regdate datetime default now(),
+primary key(cno)
+);
 
  
  

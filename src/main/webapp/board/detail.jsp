@@ -46,5 +46,35 @@
 	</c:if>
 	<a href="/brd/list"><button>리스트</button></a>
 	
+	<!-- comment input line -->
+	<div>
+		<h3>댓글 입력</h3>
+		<input type="text" id="cmtWriter" value="${ses.id }" 
+				placeholder="writer..."> <br>
+		<textarea rows="3" cols="30" id="cmtText" placeholder="Add Comment..."></textarea>
+		<button type="button" id="cmtAddBtn">post</button>
+	</div>
+	
+	<hr>
+	
+	<!-- comment print line -->
+	
+	<div id="commentLine">
+		<div>
+			<div>cno, bno, writer, regdate</div>
+			<div>
+				<input type="text" value="contents...">
+				<button type="button">수정</button>
+				<button type="button">삭제</button>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		const bno = `<c:out value="${board.bno}" />`;
+	</script>
+		
+	<script type="text/javascript" src="/resources/boardDetails_comment.js"></script>
+	
 </body>
 </html>

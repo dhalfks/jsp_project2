@@ -189,13 +189,7 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
-			
-	
-			
-			
-			
-			
-			
+
 			
 		}
 		

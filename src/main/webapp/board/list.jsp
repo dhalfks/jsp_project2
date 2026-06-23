@@ -54,7 +54,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	${ph }
 	<!-- paging line -->
 	<div>
 		<!-- 이전  11 ~ 20-->
