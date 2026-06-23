@@ -3,6 +3,7 @@ package service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import domain.Comment;
 import repository.CommentDAO;
 import repository.CommentDAOImpl;
 
@@ -14,6 +15,12 @@ public class CommentServiceImpl implements CommentService {
 	
 	public CommentServiceImpl() {
 		cdao = new CommentDAOImpl();
+	}
+
+	@Override
+	public int insert(Comment comment) {
+		// TODO Auto-generated method stub
+		return cdao.insert(comment);
 	}
 
 }

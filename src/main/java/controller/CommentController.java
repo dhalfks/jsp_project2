@@ -1,15 +1,21 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import domain.Comment;
 import service.CommentService;
 import service.CommentServiceImpl;
 
@@ -39,6 +45,51 @@ public class CommentController extends HttpServlet {
 		
 		String uri = request.getRequestURI();
 		log.info(">>> comment uri >> {}",uri);
+		
+		String path = uri.substring(uri.lastIndexOf("/")+1);
+		
+		switch(path) {
+		case "post":
+			try {
+				// 동기방식 => request.getParameter("name"); // 파라미터 객체를 읽어들임.
+				// 비동기 방식 => 파일 입출력 처럼 읽고(Reader) 쓰기(Writer)
+				// request.getReader() / response.getWriter()
+				
+				BufferedReader br = request.getReader();
+
+				// '{"bno": "317", "writer": "111", "contents": "1111"}'
+				// string -> 객체 형태로 parser -> JSONObject
+				// JSONObject => key:value => Comment 객체로 생성
+				
+				JSONParser parser = new JSONParser();
+				// string -> key:value 형태로 변환
+				JSONObject jsonobj = (JSONObject)parser.parse(br);
+				log.info(">>> jsonobj>>{}", jsonobj);
+				
+				int bno = Integer.parseInt(jsonobj.get("bno").toString());
+				String writer = jsonobj.get("writer").toString();
+				String contents = jsonobj.get("contents").toString();
+				
+				Comment comment = new Comment();
+				comment.setBno(bno);
+				comment.setWriter(writer);
+				comment.setContents(contents);
+				
+				int isOk = csv.insert(comment);
+				
+				log.info(">> comment insert >>{}", (isOk>0)? "성공":"실패");
+				
+				// 결과 보내기
+				PrintWriter pw = response.getWriter();
+				pw.print(isOk);
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+		}
 		
 		
 		
