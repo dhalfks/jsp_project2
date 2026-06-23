@@ -35,6 +35,7 @@ document.getElementById('cmtAddBtn').addEventListener('click', ()=>{
         }
 
         // 댓글 리스트를 띄우기
+        printCommentList(bno);
         
     })
 });
@@ -61,4 +62,40 @@ async function postCommentToServer(cmtData) {
     } catch (error) {
         console.log(error);
     }
+}
+
+// 리스트 호출
+async function getCommentListFromServer(bno) {
+    try {
+        const response = await fetch(`/cmt/list?bno=${bno}`);
+        const result = await response.json(); // 댓글 리스트 [{},{},{}]
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function printCommentList(bno){
+    getCommentListFromServer(bno).then(result =>{
+        console.log(result);
+        const div = document.getElementById('commentLine');
+        let str='';
+        if(result.length > 0){
+            //댓글이 있는 경우
+            for(let cmt of result){
+                str+=`<div>`;
+                str+=`<div>${cmt.cno} / ${cmt.writer} (${cmt.regdate})</div>`;
+                str+=`<div>`;
+                str+=`<input type="text" value="${cmt.contents}">`;
+                str+=`<button type="button">❗</button>`;
+                str+=`<button type="button">❌</button>`;
+                str+=`</div></div>`;
+            }
+
+            div.innerHTML = str;
+        }else{
+            // 댓글이 없는 경우
+            div.innerHTML = `<div>댓글이 없습니다.</div>`;
+        }
+    })
 }

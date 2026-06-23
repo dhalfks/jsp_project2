@@ -8,4 +8,8 @@
   	insert into comment(bno, writer, contents)  values (#{bno}, #{writer}, #{contents})
   </insert>
   
+  <select id="list" resultType="domain.Comment">
+  	select * from comment where bno = #{bno}
+  </select>
+  
   </mapper>

@@ -3,6 +3,7 @@ package controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -89,7 +91,45 @@ public class CommentController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "list":
+			try {
+				// bno에 해당하는 리스트를 가져오기
+				//  /cmt/list?bno=317
+				int bno = Integer.parseInt(request.getParameter("bno"));
+				
+				List<Comment> list = csv.getList(bno);
+				
+				log.info(">>> comment List >> {}", list);
+				//[{...},{...},{...}]
+				// JSONArray [] => add => JSONObject {...} put
+				// List<Comment> => Json 형식으로 변환
+				JSONArray jsonArray = new JSONArray();  // [] => arrayList
+				for(Comment c : list) {
+					JSONObject obj = new JSONObject();  // {} => map
+					obj.put("cno", c.getCno());
+					obj.put("bno", c.getBno());
+					obj.put("writer", c.getWriter());
+					obj.put("contents", c.getContents());
+					obj.put("regdate", c.getRegdate());
+					
+					jsonArray.add(obj);
+				}
+				log.info(">>> json array > {}", jsonArray);
+				
+				// 네트워크로 가는 데이터는 String으로 변환해야 전송가능.
+				String jsonData = jsonArray.toJSONString();
+				
+				PrintWriter pw = response.getWriter();
+				pw.print(jsonData);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
 		}
+		
 		
 		
 		

@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,12 @@ public class CommentDAOImpl implements CommentDAO {
 		int isOk = sql.insert("commentMapper.post", comment);
 		if(isOk>0) sql.commit();
 		return isOk;
+	}
+
+	@Override
+	public List<Comment> getList(int bno) {
+		// TODO Auto-generated method stub
+		return sql.selectList("commentMapper.list", bno);
 	}
 
 }

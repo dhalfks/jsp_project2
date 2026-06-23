@@ -76,5 +76,9 @@
 		
 	<script type="text/javascript" src="/resources/boardDetails_comment.js"></script>
 	
+	<script type="text/javascript">
+		printCommentList(bno);
+	</script>
+	
 </body>
 </html>

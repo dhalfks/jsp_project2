@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,12 @@ public class CommentServiceImpl implements CommentService {
 	public int insert(Comment comment) {
 		// TODO Auto-generated method stub
 		return cdao.insert(comment);
+	}
+
+	@Override
+	public List<Comment> getList(int bno) {
+		// TODO Auto-generated method stub
+		return cdao.getList(bno);
 	}
 
 }
