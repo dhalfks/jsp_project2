@@ -12,4 +12,12 @@
   	select * from comment where bno = #{bno}
   </select>
   
+  <update id="up">
+  	update comment set contents = #{contents} where cno = #{cno}
+  </update>
+  
+  <delete id="del">
+  	delete from comment where cno = #{cno}
+  </delete>
+  
   </mapper>

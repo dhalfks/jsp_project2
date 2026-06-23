@@ -128,6 +128,47 @@ public class CommentController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "modify":
+			try {
+				BufferedReader br = request.getReader();
+				
+				JSONParser parser = new JSONParser();
+				JSONObject jsonobj = (JSONObject)parser.parse(br);
+				
+				int cno = Integer.parseInt(jsonobj.get("cno").toString());
+				String contents = jsonobj.get("contents").toString();
+				
+				Comment comment = new Comment();
+				comment.setCno(cno);
+				comment.setContents(contents);
+				
+				int isOk = csv.update(comment);
+				
+				PrintWriter pw = response.getWriter();
+				pw.print(isOk);
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
+			
+		case "delete":
+			try {
+				int cno = Integer.parseInt(request.getParameter("cno"));
+				
+				int isOk = csv.delete(cno);
+				
+				PrintWriter pw = response.getWriter();
+				pw.print(isOk);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
 		}
 		
 		

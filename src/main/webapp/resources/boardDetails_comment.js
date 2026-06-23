@@ -86,16 +86,91 @@ function printCommentList(bno){
                 str+=`<div>`;
                 str+=`<div>${cmt.cno} / ${cmt.writer} (${cmt.regdate})</div>`;
                 str+=`<div>`;
-                str+=`<input type="text" value="${cmt.contents}">`;
-                str+=`<button type="button">❗</button>`;
-                str+=`<button type="button">❌</button>`;
+                str+=`<input type="text" class="cmtText" value="${cmt.contents}">`;
+                str+=`<button type="button" class="mod" data-cno=${cmt.cno}>❗</button>`;
+                str+=`<button type="button" class="del" data-cno=${cmt.cno}>❌</button>`;
                 str+=`</div></div>`;
             }
-
             div.innerHTML = str;
         }else{
             // 댓글이 없는 경우
             div.innerHTML = `<div>댓글이 없습니다.</div>`;
         }
     })
+}
+
+document.getElementById('commentLine').addEventListener('click',(e)=>{
+    
+	if(e.target.classList.contains('mod')){
+		// 수정 => 수정된 cno, contents 객체를 만들어서 전송
+        let cno = e.target.dataset.cno;
+        // closest : 내 타겟을 기준으로 나랑 가장 가까운 부모의 css 선택자를 찾기
+        let div = e.target.closest('div');
+        console.log(div);
+		let cmtText = div.querySelector(".cmtText").value;
+
+        let cmtData = {
+            cno: cno,
+            contents: cmtText
+        }
+        console.log(cmtData);
+        // 비동기 전송 함수 호출
+        updateCommentToServer(cmtData).then(result =>{
+            if(result > 0){
+                alert("댓글 수정 성공!")
+            }else{
+                alert("댓글 수정 실패!")
+            }
+
+            printCommentList(bno);
+        })
+
+	}
+
+    if(e.target.classList.contains('del')){
+        // 삭제 => cno만 인지하여 삭제요청
+        let cno = e.target.dataset.cno;
+		
+		deleteCommentToServer(cno).then(result =>{
+			if(result > 0){
+                alert("댓글 삭제 성공!")
+            }else{
+                alert("댓글 삭제 실패!")
+            }
+            printCommentList(bno);
+		})
+    }
+})
+
+// 삭제 데이터 전송 요청
+async function deleteCommentToServer(cno){
+	try{
+		const response = await fetch(`/cmt/delete?cno=${cno}`);
+        const result = await response.text();
+        return result;
+	}catch(error){
+		console.log(error);
+	}
+}
+
+
+// 수정 데이터 전송 요청
+async function updateCommentToServer(cmtData) {
+    try {
+        const url = "/cmt/modify";
+        const config = {
+            method:'post',
+            headers:{
+                'content-type':'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(cmtData)
+        }
+
+        const response = await fetch(url, config);
+        const result = await response.text();
+        return result;
+        
+    } catch (error) {
+        console.log(error);
+    }
 }
