@@ -70,6 +70,7 @@ public class BoardController extends HttpServlet {
 		switch(path) {
 		case "register": 
 			destPage = "/board/register.jsp";
+			rdpForward(request, response);
 			break;
 		
 		case "insert":
@@ -181,6 +182,7 @@ public class BoardController extends HttpServlet {
 				
 				// 처리 후 보내야 하는 페이지 => list 페이지로 전송 => list case 전송
 				destPage="list";
+				response.sendRedirect(destPage);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -221,6 +223,7 @@ public class BoardController extends HttpServlet {
 				request.setAttribute("list", list);
 				request.setAttribute("ph", ph);
 				destPage="/board/list.jsp";
+				rdpForward(request, response);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -235,6 +238,7 @@ public class BoardController extends HttpServlet {
 				Board board = bsv.getDetail(bno);
 				request.setAttribute("board", board);
 				destPage="/board/"+path+".jsp";
+				rdpForward(request, response);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -329,6 +333,8 @@ public class BoardController extends HttpServlet {
 				
 				// 보낼 페이지 주소 => detail case로 보내고 싶음.
 				destPage = "detail?bno="+board.getBno();
+				response.sendRedirect(destPage);
+				
 				
 				
 			} catch (Exception e) {
@@ -336,6 +342,8 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+
 			
 		case "delete":
 			try {
@@ -345,6 +353,7 @@ public class BoardController extends HttpServlet {
 				bsv.delete(bno);
 				
 				destPage = "list"; // 내부 케이스를 돌아야 함.
+				response.sendRedirect(destPage);
 				
 				
 			} catch (Exception e) {
@@ -355,14 +364,14 @@ public class BoardController extends HttpServlet {
 
 			
 		}
-		
+	}
+	
+	private void rdpForward(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 처리가 완료된 응답객체를 보내기
 		// RequestDispatcher  응답객체를 전달하는 역할  /  destPage값을 전달
 		rdp = request.getRequestDispatcher(destPage);
 		// 전송
 		rdp.forward(request, response);
-		
-		
 	}
 
 

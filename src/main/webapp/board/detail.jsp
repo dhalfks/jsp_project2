@@ -12,7 +12,7 @@
 	
 
 	<table border="1">
-		<img alt="" src="/_fileUpload/${board.imagefile }">
+		<img alt="" src="/_fileUpload/${board.imagefile }" width="500px">
 		<tr>
 			<th>no.</th>
 			<td>${board.bno }</td>

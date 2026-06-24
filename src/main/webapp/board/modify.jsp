@@ -10,7 +10,7 @@
 
 <h1>수정 페이지</h1>
 
-	<img alt="" src="/_fileUpload/${board.imagefile }">
+	<img alt="" src="/_fileUpload/${board.imagefile }" width="500px">
 	
 	<form action="/brd/update" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="imagefile" value="${board.imagefile }">

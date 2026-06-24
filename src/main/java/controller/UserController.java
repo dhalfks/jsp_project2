@@ -59,6 +59,7 @@ public class UserController extends HttpServlet {
 		case "register" :
 			// 데이터 없는 페이지의 오픈
 			destPage = "/member/register.jsp";
+			rdpForward(request, response);
 			break;
 			
 		case "insert":
@@ -80,7 +81,8 @@ public class UserController extends HttpServlet {
 				
 				log.info(">> user insert >> {}", (isOk > 0)? "성공": "실패");
 				
-				destPage = "/index.jsp";
+				destPage = "/";
+				response.sendRedirect(destPage);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -91,6 +93,7 @@ public class UserController extends HttpServlet {
 		case "login":
 			// 로그인 페이지 열기
 			destPage = "/member/login.jsp";
+			rdpForward(request, response);
 			break;
 			
 		case "join":
@@ -114,13 +117,16 @@ public class UserController extends HttpServlet {
 					ses.setMaxInactiveInterval(60*10); // 10분 로그인 유지시간 초단위
 					log.info(">> ses >> {}", ses);
 					destPage = "/";  // index.jsp
+					response.sendRedirect(destPage);
 					
 				}else {
 					// 로그인 객체가 없다면...
 					// index.jsp 페이지로 메시지를 전송
 					
-					//request.setAttribute("login_msg", "notUser");
+					// redirect에서는 request 객체가 변경됨.
+					//request.setAttribute("login_msg", "notUser"); // redirect에서는 못씀. 
 					destPage = "/?login_msg=notUser";
+					response.sendRedirect(destPage);
 				}
 				
 			} catch (Exception e) {
@@ -144,6 +150,7 @@ public class UserController extends HttpServlet {
 				ses.invalidate();
 				
 				destPage = "/";
+				response.sendRedirect(destPage);
 				
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -153,6 +160,7 @@ public class UserController extends HttpServlet {
 			
 		case "modify":
 			destPage = "/member/modify.jsp";
+			rdpForward(request, response);
 			break;
 			
 		case "update":
@@ -185,10 +193,12 @@ public class UserController extends HttpServlet {
 					ses.invalidate();
 					// jsp에서 받을 때 param.변수명
 					destPage = "/?update_msg=OK";
+					response.sendRedirect(destPage);
 				}else {
 					request.setAttribute("update_msg", "Fail");
 					// jsp에서 받을 때 그냥 변수명으로 받기
 					destPage = "/member/modify.jsp";
+					rdpForward(request, response);
 				}
 				
 			} catch (Exception e) {
@@ -208,9 +218,11 @@ public class UserController extends HttpServlet {
 					ses.removeAttribute("ses");
 					ses.invalidate();
 					destPage= "/?delete_msg=OK";
+					response.sendRedirect(destPage);
 				}else {
 					request.setAttribute("delete_msg", "Fail");
 					destPage="/member/modify.jsp";
+					rdp.forward(request, response);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -218,12 +230,16 @@ public class UserController extends HttpServlet {
 			}
 			break;
 			
-		}
+		}	
 		
+	}
+	
+	private void rdpForward(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 처리가 완료된 응답객체를 보내기
+		// RequestDispatcher  응답객체를 전달하는 역할  /  destPage값을 전달
 		rdp = request.getRequestDispatcher(destPage);
+		// 전송
 		rdp.forward(request, response);
-		
-		
 	}
 
 
