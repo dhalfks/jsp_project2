@@ -18,5 +18,6 @@ public class Board {
 	private String contents;
 	private String regdate;
 	private String moddate;
+	private String imagefile;
 	
 }

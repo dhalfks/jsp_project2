@@ -11,8 +11,8 @@
 	<!-- parameterType ="들어오는 개체명"(생략가능) / resultType="나갈 객체의 타입" -->
 	
 	<insert id="add" parameterType="domain.Board">
-		insert into board(title, writer, contents) 
-			values(#{title}, #{writer}, #{contents})
+		insert into board(title, writer, contents, imagefile) 
+			values(#{title}, #{writer}, #{contents}, #{imagefile})
 	</insert>
 	
 	<select id="list" resultType="domain.Board">

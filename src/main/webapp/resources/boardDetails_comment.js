@@ -87,8 +87,10 @@ function printCommentList(bno){
                 str+=`<div>${cmt.cno} / ${cmt.writer} (${cmt.regdate})</div>`;
                 str+=`<div>`;
                 str+=`<input type="text" class="cmtText" value="${cmt.contents}">`;
-                str+=`<button type="button" class="mod" data-cno=${cmt.cno}>❗</button>`;
-                str+=`<button type="button" class="del" data-cno=${cmt.cno}>❌</button>`;
+                if(sesId == cmt.cmtWriter){
+					str+=`<button type="button" class="mod" data-cno=${cmt.cno}>❗</button>`;
+	                str+=`<button type="button" class="del" data-cno=${cmt.cno}>❌</button>`;					
+				}
                 str+=`</div></div>`;
             }
             div.innerHTML = str;

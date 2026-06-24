@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,12 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import domain.Board;
 import domain.PagingVO;
 import handler.PagingHandler;
+import net.coobird.thumbnailator.Thumbnails;
 import service.BoardService;
 import service.BoardServiceImpl;
 
@@ -69,15 +74,103 @@ public class BoardController extends HttpServlet {
 		case "insert":
 			// title, writer, contents => DB로 전송
 			try {
-				String title = request.getParameter("title");
-				String writer = request.getParameter("writer");
-				String contents = request.getParameter("contents");
+				// 첨부파일이 있을 경우 수정 코드
+				// image 저장 + DB 저장
+				// 파일 업로드 시 사용할 물리적인 경로를 설정
+				String savePath = getServletContext().getRealPath("/_fileUpload");
 				
-				// DB로 등록할 객체
-				Board board = new Board();
-				board.setTitle(title);
-				board.setWriter(writer);
-				board.setContents(contents);
+				// 파일 객체 생성
+				// 파일이름은 동적으로 들어옴 / 경로는 이미 정해져 있음. => savePath
+				File fileDir = new File(savePath);
+				log.info(">> fileDir >> {}", fileDir.toString());
+				
+				DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
+				// 실제 저장할 경로(저장할 file 객체)
+				fileItemFactory.setRepository(fileDir);
+				// 파일 저장시 사용할 메모리 공간 (임시공간)
+				fileItemFactory.setSizeThreshold(1024*1024*3);
+				
+				Board board = new Board();  // DB 저장 객체
+				
+				// form 태그에서 넘어온 multipart/form-data 객체를 
+				// 우리가 다루기 쉽게 변환해주는 클래스
+				ServletFileUpload fileupload = new ServletFileUpload(fileItemFactory);
+				
+				List<FileItem> fileItem = fileupload.parseRequest(request);
+				
+				log.info(">> list file item >> {}", fileItem);
+				
+				for(FileItem item : fileItem) {
+					log.info(">> item >> {}", item);
+					// title, writer, contents => string
+					// imagefile => image (file)
+					// fieldName => form name=""
+					switch(item.getFieldName()) {
+					case "title": 
+						// byte 형태로 풀어져서 전송 => 다시 텍스트로 조합 => utf-8로 인코딩 해서 조립
+						String title = item.getString("utf-8");
+						board.setTitle(title);
+						break;
+					case "writer": 
+						board.setWriter(item.getString("utf-8"));
+						break;
+					case "contents": 
+						board.setContents(item.getString("utf-8"));
+						break;
+					case "imagefile": 
+						// 파일의 용량이 잘 들어왔는지 체크
+						// 원래는 화면에서 (js) 체크 하고 들어옴
+						if(item.getSize() > 0) {
+							// 이름 추출
+							String fileName = item.getName();
+							// 파일 이름은 내부에서 중복확인/구분을 쉽게 하기 위해 고유번호를 붙여서 관리
+							// UUID / 시스템의 현재 시간을 이용하여 구분
+							fileName = System.currentTimeMillis()+"_"+fileName;
+							
+							log.info(">> fileName >>{}", fileName);
+							
+							// 파일 객체 생성
+							// 경로 + 파일 구분자 + 파일이름.확장자
+							// 파일구분자 (경로기호) => 운영체제마다 다름 / \
+							// File.separator : 파일 경로 기호
+							File uploadFile = new File(fileDir+File.separator+fileName);
+							log.info(">> uploadFile >>{}", uploadFile.toString());
+							
+							// 저장
+							try {
+								item.write(uploadFile); // 저장
+								board.setImagefile(fileName); // 저장 경로는 동일
+								
+								// 썸네일 작업
+								// list 페이지에서 트래픽 과다 사용 방지 (연결 시간 지연 방지)
+								// 작은 이미지로 조정 => 이미지만 가능
+								Thumbnails.of(uploadFile)
+									.size(75, 75)
+									.toFile(new File(fileDir+File.separator+"th_"+fileName));
+								
+							} catch (Exception e) {
+								// TODO: handle exception
+								log.info(">> file upload on disk error");
+								e.printStackTrace();
+							}
+							
+						}  // if end
+						break;
+					} // item 내부 for 안 switch 끝
+				} // 내부 for end
+				
+				
+				// 첨부파일이 없을 경우 코드
+//				String title = request.getParameter("title");
+//				String writer = request.getParameter("writer");
+//				String contents = request.getParameter("contents");
+//				
+//				// DB로 등록할 객체
+//				Board board = new Board();
+//				board.setTitle(title);
+//				board.setWriter(writer);
+//				board.setContents(contents);
+				
 				
 				// boardService 해당 객체 전달
 				int isOk = bsv.insert(board);

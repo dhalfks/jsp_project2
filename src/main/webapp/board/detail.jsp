@@ -72,6 +72,7 @@
 	
 	<script type="text/javascript">
 		const bno = `<c:out value="${board.bno}" />`;
+		const sesId = `<c:out value="${ses.id}" />`;
 	</script>
 		
 	<script type="text/javascript" src="/resources/boardDetails_comment.js"></script>

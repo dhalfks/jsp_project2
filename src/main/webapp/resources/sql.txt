@@ -51,6 +51,17 @@ regdate datetime default now(),
 primary key(cno)
 );
 
+-- 2026-06-24
+-- imageFile 칼럼 추가
+alter table board add imagefile varchar(500);
+
+
+
+
+
+
+
+
  
  
  

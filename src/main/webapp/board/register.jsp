@@ -9,11 +9,13 @@
 <body>
 	<h1>글쓰기 페이지</h1>
 	
-	<form action="/brd/insert" method="post">
+	<form action="/brd/insert" method="post" enctype="multipart/form-data">
 		제목: <input type="text" name="title" placeholder="제목을 입력하세요."><br>
 		작성자 : <input type="text" name="writer" value="${ses.id }" readonly="readonly"><br>
 		내용:
 		<textarea rows="10" cols="30" name="contents" placeholder="내용을 입력하세요."></textarea><br>
+		file: <input type="file" name="imagefile">
+		
 		<button type="submit">등록</button>
 		<button type="reset">취소</button>
 	</form>
