@@ -328,7 +328,7 @@ public class BoardController extends HttpServlet {
 				log.info(">>> update {}", (isOk > 0) ? "성공" : "실패");
 				
 				// 보낼 페이지 주소 => detail case로 보내고 싶음.
-				destPage = "detail?bno="+bno;
+				destPage = "detail?bno="+board.getBno();
 				
 				
 			} catch (Exception e) {
