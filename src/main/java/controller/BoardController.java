@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import domain.Board;
 import domain.PagingVO;
+import handler.FileRemoveHandler;
 import handler.PagingHandler;
 import net.coobird.thumbnailator.Thumbnails;
 import service.BoardService;
@@ -243,14 +244,83 @@ public class BoardController extends HttpServlet {
 			
 		case "update":
 			try {
-				int bno = Integer.parseInt(request.getParameter("bno"));
-				String title = request.getParameter("title");
-				String contents = request.getParameter("contents");
+				// file 있는 경우
+				String savePath = getServletContext().getRealPath("/_fileUpload");
+				File fileDir = new File(savePath);
+				int size = 1024*1024*3;
+				
+				DiskFileItemFactory fileItemFactory = new DiskFileItemFactory(size, fileDir);
 				
 				Board board = new Board();
-				board.setBno(bno);
-				board.setTitle(title);
-				board.setContents(contents);
+				
+				ServletFileUpload fileUpload = new ServletFileUpload(fileItemFactory);
+				
+				List<FileItem> itemList = fileUpload.parseRequest(request);
+				
+				String old_file = null; // 기존 이미지 파일이 있다면 여기다 저장
+				
+				for(FileItem item : itemList) {
+					// item fieldName => input name = ""
+					switch(item.getFieldName()) {
+					case "bno": 
+						board.setBno(Integer.parseInt(item.getString("utf-8")));
+						break;
+					case "title": 
+						board.setTitle(item.getString("utf-8"));
+						break;
+					case "contents":
+						board.setContents(item.getString("utf-8"));
+						break;
+					case "imagefile": 
+						old_file = item.getString("utf-8");
+						break;
+					case "newfile": 
+						// 새로 추가되는 파일이 있다면...
+						if(item.getSize() > 0) {
+							if(old_file != null) {
+								// 기존 파일이 존재했다면 => 기존파일 삭제
+								// fileRemoveHandler를 통해서 파일 삭제 작업 진행
+								FileRemoveHandler fh = new FileRemoveHandler();
+								boolean isDel = fh.deleteFile(savePath, old_file);								
+							}
+							// 새파일 등록 작업
+							String fileName = System.currentTimeMillis()+"_"+item.getName();
+							// 경로 + 구분자 + 파일이름
+							File uploadFile = new File(fileDir+File.separator+fileName);
+							//저장
+							try {
+								
+								item.write(uploadFile);
+								board.setImagefile(fileName); // 바뀐 파일 이름
+								
+								Thumbnails.of(uploadFile)
+									.size(75, 75)
+									.toFile(new File(fileDir+File.separator+"th_"+fileName));
+								
+							} catch (Exception e) {
+								// TODO: handle exception
+								log.info("file upload update error");
+								e.printStackTrace();
+							}
+							
+						}else {
+							// 새로 추가되는 파일이 없으면... 기존 파일값을 그대로 넣기
+							board.setImagefile(old_file);
+						}
+						
+						break;
+					}
+				}
+				
+				// file 없는 경우
+//				int bno = Integer.parseInt(request.getParameter("bno"));
+//				String title = request.getParameter("title");
+//				String contents = request.getParameter("contents");
+//				
+//				Board board = new Board();
+//				board.setBno(bno);
+//				board.setTitle(title);
+//				board.setContents(contents);
 				
 				log.info(">>> update board {}", board);
 				

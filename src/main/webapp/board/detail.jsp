@@ -9,8 +9,10 @@
 </head>
 <body>
 	<h1>게시글 상세 페이지</h1>
+	
 
 	<table border="1">
+		<img alt="" src="/_fileUpload/${board.imagefile }">
 		<tr>
 			<th>no.</th>
 			<td>${board.bno }</td>

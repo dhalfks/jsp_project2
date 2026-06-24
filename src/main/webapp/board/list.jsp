@@ -46,7 +46,11 @@
 				<tr>
 					<td>${board.bno }</td>
 					<td>
-					 	<a href="/brd/detail?bno=${board.bno }">${board.title }</a> 
+					 	<a href="/brd/detail?bno=${board.bno }">
+					 		<!-- 썸네일 이미지 표시 -->
+					 		<img alt="" src="/_fileUpload/th_${board.imagefile }">
+					 		${board.title }
+					 	</a> 
 					</td>
 					<td>${board.writer }</td>
 					<td>${board.regdate }</td>

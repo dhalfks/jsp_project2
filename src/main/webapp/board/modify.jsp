@@ -9,8 +9,11 @@
 <body>
 
 <h1>수정 페이지</h1>
+
+	<img alt="" src="/_fileUpload/${board.imagefile }">
 	
-	<form action="/brd/update" method="post">
+	<form action="/brd/update" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="imagefile" value="${board.imagefile }">
 		번호: <input type="text" name="bno" value="${board.bno }" readonly="readonly"><br>
 		제목: <input type="text" name="title" value="${board.title }"><br>
 		작성자 : <input type="text" name="writer" value="${board.writer }" readonly="readonly"><br>
@@ -18,6 +21,8 @@
 		수정일 : <span>${board.moddate }</span><br>
 		내용:
 		<textarea rows="10" cols="30" name="contents" >${board.contents }</textarea><br>
+		file: <input type="file" name="newfile">
+		
 		<button type="submit">수정</button>
 		<a href="/brd/detail?bno=${board.bno }"><button type="button">취소</button></a>
 	</form>
